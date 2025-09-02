@@ -1,22 +1,30 @@
 appid,title,status,tags,image
-1030300,"Hollow Knight: Silksong",backlog,Action;Adventure;Indie,https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1030300/7983574d464e6559ac7e24275727f73a8bcca1f3/header.jpg?t=1756279645
-1962700,"Subnautica 2",backlog,Action;Adventure;Early Access,https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1962700/header.jpg?t=1756333300
-1671210,"DELTARUNE",backlog,Indie;RPG,https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1671210/7ccda5b1631d2e60cc756a3271e845dbb9168821/header.jpg?t=1749252480
 1245620,"ELDEN RING",backlog,Action;RPG,https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1245620/header.jpg?t=1748630546
 2622380,"ELDEN RING NIGHTREIGN",backlog,Action;RPG,https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2622380/header.jpg?t=1753977256
 367520,"Hollow Knight",backlog,Action;Adventure;Indie,https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/367520/header.jpg?t=1695270428
 1349060,"It Steals",backlog,Action;Indie,https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1349060/header.jpg?t=1667091081
-1966720,"Lethal Company",backlog,Action;Adventure;Indie;Early Access,https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1966720/header.jpg?t=1750273815
-3716600,"Mage Arena",backlog,Action;Early Access,https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3716600/e09e178465c67642c1214736e29d64846d966e52/header.jpg?t=1754585254
-1281930,"tModLoader",backlog,Action;Adventure;Indie;RPG;Free To Play,https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1281930/header.jpg?t=1718143594
-2225070,"Trackmania",backlog,Racing,https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2225070/header.jpg?t=1751554575
 1229490,"ULTRAKILL",backlog,Action;Indie;Early Access,https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1229490/header.jpg?t=1740623813
 1717770,"The Upturned",backlog,Action;Adventure;Indie,https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1717770/header.jpg?t=1654213919
-1167630,"Teardown",backlog,Action;Indie;Simulation;Strategy,https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1167630/header.jpg?t=1751447285
-648800,"Raft",backlog,Adventure;Indie;Simulation,https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/648800/header.jpg?t=1727184011
+1281930,"tModLoader",backlog,Action;Adventure;Indie;RPG;Free To Play,https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1281930/header.jpg?t=1718143594
+397950,"Clustertruck",backlog,Action;Indie,https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/397950/header.jpg?t=1752510453
+1708150,"Juice Galaxy",backlog,Indie;RPG;Early Access,https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1708150/header.jpg?t=1740111871
 400,"Portal",backlog,Action,https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/400/header.jpg?t=1745368554
 620,"Portal 2",backlog,Action;Adventure,https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/620/header.jpg?t=1745363004
-1708150,"Juice Galaxy",backlog,Indie;RPG;Early Access,https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1708150/header.jpg?t=1740111871
-2504480,"Indigo Park: Chapter 1",backlog,Action;Adventure;Casual;Indie;Free To Play,https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2504480/header.jpg?t=1716044832
-1721470,"Poppy Playtime",backlog,Action;Adventure;Indie,https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1721470/header.jpg?t=1755873139
-0000000, "The Legend of Zelda: The Wind Waker",backlog,Non-Steam,https://www.nintendo.com/eu/media/images/10_share_images/games_15/gamecube_12/SI_GCN_TheLegendOfZeldaTheWindWaker.jpg
+648800,"Raft",backlog,Adventure;Indie;Simulation,https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/648800/header.jpg?t=1727184011
+22230,"Rock of Ages",backlog,Action;Indie;Racing;Strategy,https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/22230/header.jpg?t=1667563022
+326460,"ShellShock Live",backlog,Action;Casual;Indie;Massively Multiplayer;Strategy,https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/326460/header.jpg?t=1683306935
+1167630,"Teardown",backlog,Action;Indie;Simulation;Strategy,https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1167630/header.jpg?t=1751447285
+0000000, "The Legend of Zelda: The Wind Waker HD",backlog,Non-Steam,https://www.nintendo.com/eu/media/images/10_share_images/games_15/gamecube_12/SI_GCN_TheLegendOfZeldaTheWindWaker.jpg
+0000000, "Super Mario Galaxy",backlog,Non-Steam,https://i.pinimg.com/736x/2a/d2/a0/2ad2a0ffe7e86c7e0a27354cceee8bf8.jpg
+0000000, "Super Mario Galaxy 2",backlog,Non-Steam,https://www.nintendo.com/eu/media/images/10_share_images/games_15/wii_24/SI_Wii_SuperMarioGalaxy2.png
+0000000, "Super Mario Galaxy 2: Cosmos Collapse",backlog,Non-Steam,https://i.ytimg.com/vi/nsOXHd8l45s/maxresdefault.jpg
+0000000, "Super Mario Sunshine",backlog,Non-Steam,https://www.nintendo.com/eu/media/images/10_share_images/games_15/gamecube_12/SI_GCN_SuperMarioSunshine_image1600w.jpg
+0000000, "The Legend of Zelda: Twilight Princess HD",backlog,Non-Steam,https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQaX3MgFtiwWfGISyJG90MRoq-ZWJSBIW3gKw&s
+0000000, "SUPER MARIO 3D WORLD",backlog,Non-Steam,https://tcrf.net/images/thumb/8/8c/Super_Mario_3D_World-title.png/320px-Super_Mario_3D_World-title.png
+0000000, "POKÉMON TEKKEN",backlog,Non-Steam,https://www.nintendo.com/eu/media/images/10_share_images/games_15/gamecube_12/SI_GCN_TheLegendOfZeldaTheWindWaker.jpg
+0000000, "PAPER MARIO Color Splash",backlog,Non-Steam,https://assets.altarofgaming.com/wp-content/uploads/2023/03/paper-mario-color-splash-game-cover-altar-of-gaming.jpg
+0000000, "New SUPER MARIO BROS U.",backlog,Non-Steam,https://www.cubed3.com/wp-content/uploads/2025/03/new-super-mario-bros-u-deluxe-nintendo-switch-art-banner.jpg
+0000000, "Luigi's Mansion",backlog,Non-Steam,https://www.nintendo.com/eu/media/images/10_share_images/games_15/nintendo_3ds_25/H2x1_3DS_LuigisMansion_image1280w.jpg
+0000000, "Luigi's Mansion: Dark Moon",backlog,Non-Steam,https://www.nintendo.com/eu/media/images/10_share_images/games_15/nintendo_3ds_25/H2x1_3DS_LuigisMansion2.jpg
+0000000, "Mario & Luigi - Bowser's Inside Story",backlog,Non-Steam,https://www.nintendo.com/eu/media/images/10_share_images/games_15/nintendo_ds_22/SI_NDS_MarioAndLuigiBowsersInsideStory_enGB.jpg
+0000000, "Mario & Luigi - Dream Team Bros",backlog,Non-Steam,https://www.nintendo.com/eu/media/images/10_share_images/games_15/nintendo_3ds_25/H2x1_3DS_MarioAndLuigiDreamTeamBros.jpg
