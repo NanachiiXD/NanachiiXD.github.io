@@ -50,13 +50,13 @@ def append_to_csv(game, csv_file=CSV_FILE):
 
     file_exists = os.path.isfile(csv_file)
     with open(csv_file, mode='a', newline='', encoding='utf-8') as f:
-        writer = csv.writer(f, quoting=csv.QUOTE_ALL)
+        writer = csv.writer(f, quoting=csv.QUOTE_MINIMAL)
         if not file_exists:
             # Write header if file is new
             writer.writerow(["appid","title","status","tags","image"])
         writer.writerow([
+            f'"{game["title"].replace("\"","\"\"")}"',  # double any internal quotes
             game["appid"],
-            game["title"],
             game["status"],
             ";".join(game["tags"]),
             game["image"]
