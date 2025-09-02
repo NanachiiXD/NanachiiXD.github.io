@@ -37,15 +37,15 @@ def append_to_csv(game, csv_file=CSV_FILE):
     """Append game to CSV, creating file if it doesn't exist."""
     file_exists = os.path.isfile(csv_file)
     with open(csv_file, mode='a', newline='', encoding='utf-8') as f:
-        writer = csv.writer(f)
+        writer = csv.writer(f, quoting=csv.QUOTE_MINIMAL)
         if not file_exists:
             # Write header if file is new
             writer.writerow(["appid","title","status","tags","image"])
         writer.writerow([
             game["appid"],
-            f'"{game["title"].replace("\"","\"\"")}"',  # Quote title for CSV
+            game["title"],                # Let csv module handle quotes
             game["status"],
-            f'"{";".join(game["tags"])}"',  # Tags separated by ;
+            ";".join(game["tags"]),       # Tags separated by ;
             game["image"]
         ])
     print(f"Added {game['title']} to {csv_file}")
