@@ -12,9 +12,9 @@
       --text: #e6e6e6;
       --muted: #a4a8b3;
       --accent: #66d9ef;
-      --ok: #8bd450;       /* Up next */
-      --active: #f2a13c;   /* Active / backlog */
-      --done: #f25f5c;     /* Finished */
+      --finished: #8bd450;
+      --active: #f2a13c;
+      --pipeline: #f25f5c;
     }
     * { box-sizing: border-box; }
     html, body { height: 100%; }
@@ -71,9 +71,9 @@
         <input id="search" type="search" placeholder="Filter by title or tag…" />
         <select id="statusFilter">
           <option value="all">All Statuses</option>
-          <option value="next">Up Next</option>
-          <option value="backlog">Backlog</option>
-          <option value="done">Finished</option>
+          <option value="finished">Finished</option>
+          <option value="active">Active</option>
+          <option value="pipeline">Pipeline</option>
         </select>
       </div>
     </header>
