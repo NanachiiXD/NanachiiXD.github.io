@@ -33,8 +33,21 @@ def fetch_steam_game(appid):
         print(f"Error fetching Steam data: {e}")
         return None
 
+def load_existing_appids(csv_file=CSV_FILE):
+    """Return a set of AppIDs already in the CSV."""
+    if not os.path.isfile(csv_file):
+        return set()
+    with open(csv_file, mode='r', encoding='utf-8') as f:
+        reader = csv.DictReader(f)
+        return {row['appid'] for row in reader}
+
 def append_to_csv(game, csv_file=CSV_FILE):
-    """Append game to CSV, creating file if it doesn't exist."""
+    """Append game to CSV if not a duplicate."""
+    existing = load_existing_appids(csv_file)
+    if game["appid"] in existing:
+        print(f"{game['title']} (AppID {game['appid']}) is already in the CSV. Skipping.")
+        return
+
     file_exists = os.path.isfile(csv_file)
     with open(csv_file, mode='a', newline='', encoding='utf-8') as f:
         writer = csv.writer(f, quoting=csv.QUOTE_MINIMAL)
@@ -43,23 +56,27 @@ def append_to_csv(game, csv_file=CSV_FILE):
             writer.writerow(["appid","title","status","tags","image"])
         writer.writerow([
             game["appid"],
-            game["title"],                # Let csv module handle quotes
+            game["title"],
             game["status"],
-            ";".join(game["tags"]),       # Tags separated by ;
+            ";".join(game["tags"]),
             game["image"]
         ])
     print(f"Added {game['title']} to {csv_file}")
 
 if __name__ == "__main__":
-    url = input("Enter Steam game URL or AppID: ").strip()
-    appid = get_steam_appid(url)
-    if not appid:
-        print("Could not parse AppID.")
-        exit(1)
-    
-    game_data = fetch_steam_game(appid)
-    if not game_data:
-        print("Failed to fetch game data.")
-        exit(1)
-    
-    append_to_csv(game_data)
+    while True:
+        url = input("Enter Steam game URL or AppID (or 'q' to quit): ").strip()
+        if url.lower() == 'q':
+            break
+
+        appid = get_steam_appid(url)
+        if not appid:
+            print("Could not parse AppID.")
+            continue
+        
+        game_data = fetch_steam_game(appid)
+        if not game_data:
+            print("Failed to fetch game data.")
+            continue
+        
+        append_to_csv(game_data)
