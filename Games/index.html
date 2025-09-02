@@ -12,8 +12,9 @@
       --text: #e6e6e6;
       --muted: #a4a8b3;
       --accent: #66d9ef;
-      --ok: #8bd450;
-      --danger: #f25f5c;
+      --ok: #8bd450;       /* Up next */
+      --active: #f2a13c;   /* Active / backlog */
+      --done: #f25f5c;     /* Finished */
     }
     * { box-sizing: border-box; }
     html, body { height: 100%; }
@@ -39,18 +40,20 @@
       border-radius: 16px;
       padding: 16px;
       display: grid;
-      grid-template-columns: 150px 1fr auto;
+      grid-template-columns: 200px 1fr auto;
       gap: 16px;
       align-items: start;
     }
-    li.game img.cover { width: 150px; border-radius: 12px; border: 1px solid #222835; object-fit: cover; }
+    li.game img.cover { width: 200px; border-radius: 12px; border: 1px solid #222835; object-fit: cover; }
     .info { display:flex; flex-direction:column; gap:8px; }
     .title { font-weight: 600; font-size: 18px; }
     .meta { color: var(--muted); font-size: 13px; }
     .tags { display:flex; gap: 10px; flex-wrap: wrap; align-items: center; }
     .tag { color:#cfd6e6; background:#1f2533; border:1px solid #2a3245; padding:5px 10px; border-radius:999px; font-size:13px; white-space: nowrap; }
-    .status { font-size:12px; padding:4px 10px; border-radius:999px; border:1px solid #1e2533; background:#172033; margin-top:4px; }
-    .status[data-state="next"] { border-color:#284a32; background:#17251b; color: var(--ok); }
+    .status { font-size:12px; padding:4px 10px; border-radius:999px; border:1px solid #1e2533; margin-top:4px; color: #e6e6e6; }
+    .status[data-state="next"] { background: var(--ok); border-color: var(--ok); color: #0f1115; }
+    .status[data-state="backlog"] { background: var(--active); border-color: var(--active); color: #0f1115; }
+    .status[data-state="done"] { background: var(--done); border-color: var(--done); color: #fff; }
     .remove { display:none; }
 
     a { color: var(--accent); text-decoration: none; }
@@ -68,9 +71,9 @@
         <input id="search" type="search" placeholder="Filter by title or tag…" />
         <select id="statusFilter">
           <option value="all">All Statuses</option>
-          <option value="next">Finished</option>
+          <option value="next">Up Next</option>
           <option value="backlog">Active</option>
-          <option value="done">Backlog</option>
+          <option value="done">Finished</option>
         </select>
       </div>
     </header>
@@ -106,7 +109,7 @@
     search.addEventListener('input', applyFilters);
     statusFilter.addEventListener('change', applyFilters);
 
-    // Robust CSV loader
+    // Load CSV
     fetch('./games.csv')
       .then(res => {
         if (!res.ok) throw new Error('CSV not found or inaccessible.');
