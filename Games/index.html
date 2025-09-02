@@ -12,9 +12,9 @@
       --text: #e6e6e6;
       --muted: #a4a8b3;
       --accent: #66d9ef;
-      --finished: #8bd450;
-      --active: #f2a13c;
-      --pipeline: #f25f5c;
+      --Finished: #8bd450;
+      --Active: #f2a13c;
+      --Pipeline: #f25f5c;
     }
     * { box-sizing: border-box; }
     html, body { height: 100%; }
@@ -51,9 +51,9 @@
     .tags { display:flex; gap: 10px; flex-wrap: wrap; align-items: center; }
     .tag { color:#cfd6e6; background:#1f2533; border:1px solid #2a3245; padding:5px 10px; border-radius:999px; font-size:13px; white-space: nowrap; }
     .status { font-size:12px; padding:4px 10px; border-radius:999px; border:1px solid #1e2533; margin-top:4px; color: #e6e6e6; }
-    .status[data-state="next"] { background: var(--ok); border-color: var(--ok); color: #0f1115; }
-    .status[data-state="backlog"] { background: var(--active); border-color: var(--active); color: #0f1115; }
-    .status[data-state="done"] { background: var(--done); border-color: var(--done); color: #fff; }
+    .status[data-state="Finished"] { background: var(--ok); border-color: var(--ok); color: #0f1115; }
+    .status[data-state="Active"] { background: var(--Active); border-color: var(--Active); color: #0f1115; }
+    .status[data-state="Pipeline"] { background: var(--Finished); border-color: var(--Finished); color: #fff; }
     .remove { display:none; }
 
     a { color: var(--accent); text-decoration: none; }
@@ -70,10 +70,10 @@
       <div class="controls">
         <input id="search" type="search" placeholder="Filter by title or tag…" />
         <select id="statusFilter">
-          <option value="all">All Statuses</option>
-          <option value="finished">Finished</option>
-          <option value="active">Active</option>
-          <option value="pipeline">Pipeline</option>
+          <option value="all">Status</option>
+          <option value="Finished">Finished</option>
+          <option value="Active">Active</option>
+          <option value="Pipeline">Pipeline</option>
         </select>
       </div>
     </header>
@@ -93,7 +93,7 @@
     function itemMatches(li, q, status){
       const t = normalize(li.querySelector('.title')?.textContent);
       const tags = normalize(li.getAttribute('data-tags'));
-      const st = li.getAttribute('data-status') || 'backlog';
+      const st = li.getAttribute('data-status') || 'Pipeline';
       return (!q || t.includes(q) || tags.includes(q)) && (status==='all' || st===status);
     }
 
