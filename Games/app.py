@@ -1,5 +1,4 @@
 import requests
-import csv
 import re
 import os
 
@@ -28,7 +27,13 @@ def fetch_steam_game(appid):
         title = game['name']
         img = game['header_image']
         tags = [g['description'] for g in game.get('genres', [])]
-        return {"appid": appid, "title": title, "status": "backlog", "tags": tags, "image": img}
+        return {
+            "appid": appid,
+            "title": title,
+            "status": "backlog",
+            "tags": tags,
+            "image": img
+        }
     except Exception as e:
         print(f"Error fetching Steam data: {e}")
         return None
@@ -37,46 +42,50 @@ def load_existing_appids(csv_file=CSV_FILE):
     """Return a set of AppIDs already in the CSV."""
     if not os.path.isfile(csv_file):
         return set()
+    existing = set()
     with open(csv_file, mode='r', encoding='utf-8') as f:
-        reader = csv.DictReader(f)
-        return {row['appid'] for row in reader}
+        next(f, None)  # skip header
+        for line in f:
+            parts = line.strip().split(',', 1)
+            if parts:
+                existing.add(parts[0])
+    return existing
 
 def append_to_csv(game, csv_file=CSV_FILE):
-    """Append game to CSV if not a duplicate."""
+    """Append game to CSV if not a duplicate, title in single quotes."""
     existing = load_existing_appids(csv_file)
     if game["appid"] in existing:
         print(f"{game['title']} (AppID {game['appid']}) is already in the CSV. Skipping.")
         return
 
     file_exists = os.path.isfile(csv_file)
-    with open(csv_file, mode='a', newline='', encoding='utf-8') as f:
-        writer = csv.writer(f, quoting=csv.QUOTE_MINIMAL)
+    with open(csv_file, mode='a', encoding='utf-8') as f:
         if not file_exists:
-            # Write header if file is new
-            writer.writerow(["appid","title","status","tags","image"])
-        writer.writerow([
-            f'"{game["title"].replace("\"","\"\"")}"',  # double any internal quotes
-            game["appid"],
-            game["status"],
-            ";".join(game["tags"]),
-            game["image"]
-        ])
+            f.write("appid,title,status,tags,image\n")
+        
+        # Manually write CSV line with only the title quoted
+        safe_title = game["title"].replace('"', "'")  # replace internal quotes
+        row = f'{game["appid"]},"{safe_title}",{game["status"]},{";".join(game["tags"])},{game["image"]}\n'
+        f.write(row)
+    
     print(f"Added {game['title']} to {csv_file}")
 
 if __name__ == "__main__":
+    print("Steam CSV Adder - Enter Steam URL or AppID (q to quit)")
     while True:
-        url = input("Enter Steam game URL or AppID (or 'q' to quit): ").strip()
+        url = input("Enter Steam game URL or AppID: ").strip()
         if url.lower() == 'q':
+            print("Exiting.")
             break
 
         appid = get_steam_appid(url)
         if not appid:
-            print("Could not parse AppID.")
+            print("Could not parse AppID. Try again.")
             continue
-        
+
         game_data = fetch_steam_game(appid)
         if not game_data:
-            print("Failed to fetch game data.")
+            print("Failed to fetch game data. Try again.")
             continue
-        
+
         append_to_csv(game_data)
