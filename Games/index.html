@@ -1,126 +1,140 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Steam Games to Play</title>
-    <style>
-      :root {
-        --bg: #0f1115;
-        --panel: #151922;
-        --text: #e6e6e6;
-        --muted: #a4a8b3;
-        --accent: #66d9ef;
-        --ok: #8bd450;
-        --danger: #f25f5c;
-      }
-      * { box-sizing: border-box; }
-      html, body { height: 100%; }
-      body {
-        margin: 0; font: 15px/1.45 system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji";
-        background: radial-gradient(1200px 800px at 10% -10%, #1a1f2b, #0f1115 40%);
-        color: var(--text);
-      }
-      .wrap { max-width: 880px; margin: 40px auto; padding: 0 16px; }
-      header { display:flex; justify-content:space-between; align-items:center; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
-      h1 { font-size: 28px; margin: 0; letter-spacing: 0.3px; }
-      .hint { color: var(--muted); font-size: 13px; }
-      .controls { display:flex; gap: 8px; flex-wrap: wrap; align-items:center; }
-      input[type="search"], select {
-        background: var(--panel); color: var(--text); border: 1px solid #242a36; border-radius: 10px; padding: 10px 12px; font: inherit;
-      }
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Die Liste™</title>
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <style>
+    :root {
+      --bg: #0f1115;
+      --panel: #151922;
+      --text: #e6e6e6;
+      --muted: #a4a8b3;
+      --accent: #66d9ef;
+      --ok: #8bd450;
+      --danger: #f25f5c;
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0; font: 15px/1.45 system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      background: radial-gradient(1200px 800px at 10% -10%, #1a1f2b, #0f1115 40%);
+      color: var(--text);
+    }
+    .wrap { max-width: 880px; margin: 40px auto; padding: 0 16px; }
+    header { display:flex; justify-content:space-between; align-items:center; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
+    h1 { font-size: 28px; margin: 0; letter-spacing: 0.3px; }
+    .controls { display:flex; gap: 8px; flex-wrap: wrap; align-items:center; }
+    input[type="search"], select {
+      background: var(--panel); color: var(--text); border: 1px solid #242a36; border-radius: 10px; padding: 10px 12px; font: inherit;
+    }
+    ul#game-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }
+    li.game {
+      background: linear-gradient(180deg, #141925, #121723); border: 1px solid #222835; border-radius: 16px; padding: 12px; display: grid; grid-template-columns: auto 120px 1fr auto; gap: 12px; align-items: center;
+    }
+    li.game img.cover { width: 120px; border-radius: 12px; border: 1px solid #222835; }
+    .info { display:flex; flex-direction:column; gap:6px; }
+    .title { font-weight: 600; font-size: 16px; }
+    .meta { color: var(--muted); font-size: 13px; }
+    .tags { display:flex; gap:6px; flex-wrap: wrap; }
+    .tag { color:#cfd6e6; background:#1f2533; border:1px solid #2a3245; padding:3px 8px; border-radius:999px; font-size:12px; }
+    .status { font-size:12px; padding:4px 8px; border-radius:999px; border:1px solid #1e2533; background:#172033; }
+    .status[data-state="next"] { border-color:#284a32; background:#17251b; color: var(--ok); }
+    .remove { display:none; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .tip { margin-top: 18px; color: var(--muted); font-size: 13px; }
+    .message { margin-top: 20px; text-align: center; color: var(--muted); font-size: 14px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>Die Liste™</h1>
+      <div class="controls">
+        <input id="search" type="search" placeholder="Filter by title or tag…" />
+        <select id="statusFilter">
+          <option value="all">All Statuses</option>
+          <option value="next">Finished</option>
+          <option value="backlog">Active</option>
+          <option value="done">Backlog</option>
+        </select>
+      </div>
+    </header>
 
-      /* List */
-      ul#game-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }
-      li.game {
-        background: linear-gradient(180deg, #141925, #121723); border: 1px solid #222835; border-radius: 16px; padding: 12px; display: grid; grid-template-columns: auto 120px 1fr auto; gap: 12px; align-items: center;
-      }
-      li.game img.cover { width: 120px; border-radius: 12px; border: 1px solid #222835; }
-      .info { display:flex; flex-direction:column; gap:6px; }
-      .title { font-weight: 600; font-size: 16px; }
-      .meta { color: var(--muted); font-size: 13px; }
-      .tags { display:flex; gap:6px; flex-wrap: wrap; }
-      .tag { color:#cfd6e6; background:#1f2533; border:1px solid #2a3245; padding:3px 8px; border-radius:999px; font-size:12px; }
-      .status { font-size:12px; padding:4px 8px; border-radius:999px; border:1px solid #1e2533; background:#172033; }
-      .status[data-state="next"] { border-color:#284a32; background:#17251b; color: var(--ok); }
-      .remove { display:none; }
+    <ul id="game-list"></ul>
+    <p class="tip">Tip: Add Steam games by editing <code>games.csv</code> in this repository.</p>
+    <div id="message" class="message"></div>
+  </div>
 
-      a { color: var(--accent); text-decoration: none; }
-      a:hover { text-decoration: underline; }
+  <script>
+    const list = document.querySelector('#game-list');
+    const search = document.querySelector('#search');
+    const statusFilter = document.querySelector('#statusFilter');
+    const message = document.querySelector('#message');
 
-      .tip { margin-top: 18px; color: var(--muted); font-size: 13px; }
-    </style>
-  </head>
-  <body>
-    <div class="wrap">
-      <header>
-        <h1>Steam Games To Play</h1>
-        <div class="controls">
-          <input id="search" type="search" placeholder="Filter by title or tag…" />
-          <select id="statusFilter">
-            <option value="all">All statuses</option>
-            <option value="next">Up next</option>
-            <option value="backlog">Backlog</option>
-            <option value="done">Finished</option>
-          </select>
-        </div>
-      </header>
+    function normalize(s){ return (s||'').toLowerCase(); }
 
-      <ul id="game-list"></ul>
-      <p class="tip">Tip: Add Steam games by editing <code>games.csv</code> in this repository.</p>
-    </div>
+    function itemMatches(li, q, status){
+      const t = normalize(li.querySelector('.title')?.textContent);
+      const tags = normalize(li.getAttribute('data-tags'));
+      const st = li.getAttribute('data-status') || 'backlog';
+      return (!q || t.includes(q) || tags.includes(q)) && (status==='all' || st===status);
+    }
 
-    <script>
-      const list = document.querySelector('#game-list');
-      const search = document.querySelector('#search');
-      const statusFilter = document.querySelector('#statusFilter');
+    function applyFilters(){
+      const q = normalize(search.value);
+      const st = statusFilter.value;
+      list.querySelectorAll('li.game').forEach(li => {
+        li.style.display = itemMatches(li, q, st) ? '' : 'none';
+      });
+    }
 
-      function normalize(s){return(s||'').toLowerCase();}
-      function itemMatches(li,q,status){
-        const t=normalize(li.querySelector('.title')?.textContent);
-        const tags=normalize(li.getAttribute('data-tags'));
-        const st=li.getAttribute('data-status')||'backlog';
-        const textMatch=!q||t.includes(q)||tags.includes(q);
-        const statusMatch=status==='all'||st===status;
-        return textMatch && statusMatch;
-      }
-      function applyFilters(){
-        const q=normalize(search.value);
-        const st=statusFilter.value;
-        for(const li of list.querySelectorAll('li.game')){li.style.display=itemMatches(li,q,st)?'':'none';}
-      }
-      search.addEventListener('input',applyFilters);
-      statusFilter.addEventListener('change',applyFilters);
+    search.addEventListener('input', applyFilters);
+    statusFilter.addEventListener('change', applyFilters);
 
-      // Fetch CSV from repo
-      fetch('games.csv')
-        .then(res=>res.text())
-        .then(text=>{
-          const lines=text.split(/\r?\n/).filter(Boolean);
-          const [header,...rows]=lines;
-          rows.forEach(line=>{
-            const parts=line.split(/,(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)/);
-            let [appid,title,status,tags,img]=parts;
-            title=title.replace(/^\"|\"$/g,'').replace(/\"\"/g,'\"');
-            tags=tags.replace(/^\"|\"$/g,'').split(';').filter(Boolean);
-            const li=document.createElement('li');
-            li.className='game';
-            li.dataset.appid=appid;
-            li.dataset.status=status;
-            li.dataset.tags=tags.join(',').toLowerCase();
-            li.innerHTML=`
-              <img class="cover" src="${img}" alt="${title} cover" />
-              <div class="info">
-                <div class="title"><a href="https://store.steampowered.com/app/${appid}/" target="_blank">${title}</a></div>
-                <div class="tags">${tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
-                <div class="meta">AppID: ${appid}</div>
-              </div>
-              <div class="status" data-state="${status}">${status[0].toUpperCase()+status.slice(1)}</div>
-            `;
-            list.appendChild(li);
-          });
-        })
-        .catch(err=>console.error('Failed to load CSV:',err));
-    </script>
-  </body>
+    // Robust CSV loader
+    fetch('./games.csv')
+      .then(res => {
+        if (!res.ok) throw new Error('CSV not found or inaccessible.');
+        return res.text();
+      })
+      .then(text => {
+        const lines = text.split(/\r?\n/).filter(Boolean);
+        if (lines.length < 2) {
+          message.textContent = 'CSV is empty or has no games.';
+          return;
+        }
+        const [header, ...rows] = lines;
+        rows.forEach(line => {
+          const parts = line.match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g);
+          if (!parts || parts.length < 5) return;
+          let [appid, title, status, tags, img] = parts;
+          title = title.replace(/^"|"$/g,'').replace(/""/g,'"');
+          tags = tags.replace(/^"|"$/g,'').split(';').map(t => t.trim()).filter(Boolean);
+
+          const li = document.createElement('li');
+          li.className = 'game';
+          li.dataset.appid = appid;
+          li.dataset.status = status;
+          li.dataset.tags = tags.join(',').toLowerCase();
+          li.innerHTML = `
+            <img class="cover" src="${img}" alt="${title} cover" />
+            <div class="info">
+              <div class="title"><a href="https://store.steampowered.com/app/${appid}/" target="_blank">${title}</a></div>
+              <div class="tags">${tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
+              <div class="meta">AppID: ${appid}</div>
+            </div>
+            <div class="status" data-state="${status}">${status[0].toUpperCase()+status.slice(1)}</div>
+          `;
+          list.appendChild(li);
+        });
+      })
+      .catch(err => {
+        console.error('Failed to load CSV:', err);
+        message.textContent = 'Failed to load CSV. Make sure "games.csv" exists in the same directory.';
+      });
+  </script>
+</body>
 </html>
