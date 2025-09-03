@@ -1,5 +1,5 @@
 input_file = "games.csv"
-output_file = "games_quoted.csv"
+output_file = "conv.csv"
 
 with open(input_file, "r", encoding="utf-8") as infile, \
      open(output_file, "w", encoding="utf-8") as outfile:
