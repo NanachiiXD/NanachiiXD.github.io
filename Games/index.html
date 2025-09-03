@@ -109,7 +109,7 @@
     statusFilter.addEventListener('change', applyFilters);
 
     // Load CSV
-    fetch('./games.csv')
+    fetch('./conv.csv')
       .then(res => {
         if (!res.ok) throw new Error('CSV not found or inaccessible.');
         return res.text();
@@ -147,7 +147,7 @@
       })
       .catch(err => {
         console.error('Failed to load CSV:', err);
-        message.textContent = 'Failed to load CSV. Make sure "games.csv" exists in the same directory.';
+        message.textContent = 'Failed to load CSV. Make sure "conv.csv" exists in the same directory.';
       });
   </script>
 </body>
