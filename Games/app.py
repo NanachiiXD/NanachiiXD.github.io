@@ -30,7 +30,7 @@ def fetch_steam_game(appid):
         return {
             "appid": appid,
             "title": title,
-            "status": "backlog",
+            "status": "Pipeline",
             "tags": tags,
             "image": img
         }
