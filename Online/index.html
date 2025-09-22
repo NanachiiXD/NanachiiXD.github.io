@@ -5,19 +5,55 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>My Live Stream</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @media (max-width: 768px) {
+      #twitch-container {
+        flex-direction: column;
+      }
+      #twitch-chat {
+        height: 300px;
+        margin-top: 1rem;
+      }
+    }
+    #preview-toggle {
+      position: fixed;
+      bottom: 1rem;
+      right: 1rem;
+      background: #1f2937;
+      color: #f9fafb;
+      padding: 0.5rem 1rem;
+      border-radius: 9999px;
+      cursor: pointer;
+      user-select: none;
+      z-index: 100;
+      font-size: 0.875rem;
+    }
+  </style>
 </head>
-<body class="bg-gray-900 text-gray-100 font-sans flex items-center justify-center min-h-screen">
-  <div class="bg-gray-800 p-8 rounded-2xl shadow-lg max-w-xl w-full text-center">
+<body class="bg-gray-900 text-gray-100 font-sans flex items-center justify-center min-h-screen p-4">
+  <div class="bg-gray-800 p-6 rounded-2xl shadow-lg w-full max-w-6xl text-center">
     <h1 class="text-3xl font-bold mb-6">🔴 Stream Status</h1>
     <div id="status-container"></div>
   </div>
 
+  <div id="preview-toggle">Preview: OFF</div>
+
   <script src="https://embed.twitch.tv/embed/v1.js"></script>
   <script>
-    const channelName = "NanachiiXD"
-    const parentDomain = "NanachiiXD.github.io"
+    const channelName = "monstercat"
+    const parentDomain = "yourusername.github.io"
     const statusContainer = document.getElementById("status-container")
     let embedRendered = false
+    let previewMode = null
+
+    const previewToggle = document.getElementById("preview-toggle")
+    previewToggle.addEventListener("click", () => {
+      if (previewMode === null) previewMode = "online"
+      else if (previewMode === "online") previewMode = "offline"
+      else previewMode = null
+      previewToggle.textContent = `Preview: ${previewMode ? previewMode.toUpperCase() : "OFF"}`
+      updateStatus()
+    })
 
     function renderCountdown(targetTime) {
       const now = new Date()
@@ -36,29 +72,51 @@
       if (embedRendered) return
       statusContainer.innerHTML = `
         <div class="mb-4 text-xl font-semibold text-green-400">✅ I am LIVE now!</div>
-        <div id="twitch-embed" class="rounded-xl overflow-hidden"></div>
-        <div class="mt-3 text-sm text-gray-300">If the player does not load or shows offline: Stream is currently not live.</div>
+        <div id="twitch-container" class="flex gap-4 justify-center items-start flex-wrap">
+          <div id="twitch-player" class="flex-1 rounded-xl overflow-hidden" style="min-width:400px;"></div>
+          <div id="twitch-chat" class="w-80 h-96 rounded-xl overflow-hidden"></div>
+        </div>
+        <div class="mt-3 text-sm text-gray-300">If the player or chat does not load: Stream is currently not live.</div>
       `
-      new Twitch.Embed("twitch-embed", {
+      new Twitch.Embed("twitch-player", {
         width: "100%",
-        height: 480,
+        height: 500,
         channel: channelName,
+        parent: [parentDomain]
+      })
+      new Twitch.Embed("twitch-chat", {
+        width: "100%",
+        height: 500,
+        channel: channelName,
+        layout: "chat",
         parent: [parentDomain]
       })
       embedRendered = true
     }
 
+    function renderOfflineEmbed() {
+      statusContainer.innerHTML = `
+        <div class="mb-4 text-xl font-semibold text-red-400">❌ Offline Preview</div>
+        <div class="p-8 rounded-xl bg-gray-700 text-gray-300">Stream is currently offline.</div>
+      `
+      embedRendered = true
+    }
+
     function updateStatus() {
-      const now = new Date()
-      const today16 = new Date(now); today16.setHours(16,0,0,0)
-      const midnight = new Date(now); midnight.setHours(24,0,0,0)
-      if (now < today16) renderCountdown(today16)
-      else if (now >= today16 && now < midnight) renderEmbed()
+      if (previewMode === "online") renderEmbed()
+      else if (previewMode === "offline") renderOfflineEmbed()
       else {
-        const tomorrow16 = new Date(now)
-        tomorrow16.setDate(now.getDate() + 1)
-        tomorrow16.setHours(16,0,0,0)
-        renderCountdown(tomorrow16)
+        const now = new Date()
+        const today16 = new Date(now); today16.setHours(16,0,0,0)
+        const midnight = new Date(now); midnight.setHours(24,0,0,0)
+        if (now < today16) renderCountdown(today16)
+        else if (now >= today16 && now < midnight) renderEmbed()
+        else {
+          const tomorrow16 = new Date(now)
+          tomorrow16.setDate(now.getDate() + 1)
+          tomorrow16.setHours(16,0,0,0)
+          renderCountdown(tomorrow16)
+        }
       }
     }
 
