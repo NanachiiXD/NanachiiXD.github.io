@@ -30,9 +30,11 @@ function parseGames(data) {
   lines.forEach(line => {
     if (line.trim() === '') return;
 
+    // Split the line into game name and modifiers list
     const [gameName, modsStr] = line.split(',', 2);
     const mods = modsStr.trim().replace(/\[|\]/g, '').split(',');
 
+    // Save the parsed game and its modifiers
     games[gameName.trim()] = mods.map(mod => mod.trim());
   });
 
@@ -47,6 +49,7 @@ function parseWeights(data) {
   lines.forEach(line => {
     if (line.trim() === '') return;
 
+    // Split the line into modifier and weight
     const [mod, weight] = line.split(',', 2);
     weights[mod.trim()] = parseInt(weight.trim(), 10);
   });
@@ -73,15 +76,18 @@ function rollGames(games, weights, rolls) {
     const game = gameKeys[Math.floor(Math.random() * gameKeys.length)];
     chosenGames.push(game);
   }
+
   const results = [];
   for (const game of chosenGames) {
     let modifier;
     if (Math.random() < 0.25 && games[game].length > 1) {
+      // Combine two modifiers with a weighted probability
       const m1 = weightedChoice(Object.fromEntries(games[game].map(m => [m, weights[m]])));
       const remaining = games[game].filter(m => m !== m1);
       const m2 = weightedChoice(Object.fromEntries(remaining.map(m => [m, weights[m]])));
       modifier = `${m1} + ${m2}`;
     } else {
+      // Pick one modifier
       modifier = weightedChoice(Object.fromEntries(games[game].map(m => [m, weights[m]])));
     }
     results.push({ game, modifier });
@@ -91,6 +97,9 @@ function rollGames(games, weights, rolls) {
 
 // Display results with typewriter effect
 async function typewriter(element, text, delay = 30) {
+  // Clear the content before writing
+  element.innerHTML = '';
+  
   for (let char of text) {
     element.innerHTML += char;
     await new Promise(r => setTimeout(r, delay));
@@ -101,6 +110,7 @@ async function typewriter(element, text, delay = 30) {
 function printResults(results) {
   const resultContainer = document.getElementById('results');
   resultContainer.innerHTML = ''; // Clear previous results
+  
   const totalRatio = results.reduce((acc, { modifier }) => acc + getWeight(modifier), 0) / results.length;
 
   const challengeMessage = totalRatio < 0.4 ? "Die Challenge Götter verschonen dich." :
