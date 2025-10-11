@@ -1,0 +1,426 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>SUB SUB SUB SUB SUB SUB PRIME NOW</title>
+<style>
+  :root{
+    --h: 0;
+    --s: 100%;
+    --l: 50%;
+    --glow: 12vmin;
+    --pulse: 1;
+    --v-scale: 1;
+  }
+
+  /* full-bleed chaos */
+  html,body{
+    height:100%;
+    margin:0;
+    background: radial-gradient(circle at 10% 20%, rgba(255,255,255,0.03), transparent 8%),
+                radial-gradient(circle at 90% 80%, rgba(0,0,0,0.03), transparent 12%),
+                #000;
+    overflow:hidden;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    color: white;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+  }
+
+  /* container */
+  .stage{
+    position:fixed;
+    inset:0;
+    display:grid;
+    place-items:center;
+    perspective:1200px;
+    z-index:1;
+    mix-blend-mode:screen;
+  }
+
+  /* monstrous video element */
+  video#yeet{
+    width: min(120vmin, 220vh);
+    max-width: 220vh;
+    transform-origin:center;
+    border-radius: 8vmin;
+    filter:
+      saturate(2)
+      contrast(1.35)
+      hue-rotate(calc(var(--h) * 1deg))
+      blur(calc(clamp(0px, (var(--pulse) - 1) * 6vmin, 8vmin)));
+    will-change: transform, filter;
+    animation:
+      wobble 4s linear infinite,
+      zoomDance 12s ease-in-out infinite;
+    box-shadow: 0 0 calc(var(--glow)) hsl(var(--h) var(--s) calc(var(--l) - 10%));
+    transform: rotateX(12deg) rotateY(calc(var(--h) * 0.2deg));
+  }
+
+  /* droplet of duplicate ghosts for chromatic aberration */
+  .ghost{
+    position:fixed;
+    inset:0;
+    display:grid;
+    place-items:center;
+    pointer-events:none;
+    z-index:0;
+    mix-blend-mode:screen;
+    opacity:.25;
+    filter: contrast(1.5) saturate(2);
+  }
+  .ghost video{ width: 100%; opacity:1; transform: translate3d(var(--tx,0),var(--ty,0),0) scale(calc(1 + var(--scl,0))); clip-path: polygon(0 0,100% 0,100% 100%,0 100%); }
+
+  /* title vomit */
+  h1.title{
+    position:fixed;
+    top:6vh;
+    left:50%;
+    transform:translateX(-50%) translateZ(60px);
+    font-size: clamp(18px, 6vw, 88px);
+    letter-spacing: .06em;
+    margin:0;
+    text-transform:uppercase;
+    z-index: 6;
+    mix-blend-mode:overlay;
+    text-shadow: 0 0 12px rgba(0,0,0,.8), 0 0 30px rgba(255,255,255,.06);
+    animation: titlePulse 2.3s ease-in-out infinite;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent);
+    -webkit-background-clip:text;
+    color: hsl(var(--h) var(--s) calc(var(--l) * 1%));
+  }
+
+  /* floating YEET emojis and shards */
+  .particle{
+    position:fixed;
+    font-weight:900;
+    pointer-events:none;
+    transform: translate3d(0,0,0);
+    text-shadow: 0 2px 6px rgba(0,0,0,.6);
+    will-change: transform, opacity;
+    z-index:7;
+    mix-blend-mode:lighten;
+  }
+
+  /* control panel (unobtrusively huge) */
+  .control{
+    position:fixed;
+    right:2vw;
+    bottom:2vh;
+    z-index:8;
+    display:flex;
+    gap:.6rem;
+    align-items:center;
+    backdrop-filter: blur(6px) saturate(1.2);
+  }
+
+  .btn{
+    appearance:none;
+    border:0;
+    padding:.9rem 1.2rem;
+    border-radius: 14px;
+    font-weight:800;
+    cursor:pointer;
+    background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+    color: hsl(var(--h) var(--s) calc(var(--l) - 40%));
+    box-shadow: 0 6px 18px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.03);
+    text-transform:uppercase;
+    letter-spacing:.06em;
+  }
+  .btn.warn{ background: linear-gradient(90deg, hsl(calc(var(--h)+160) var(--s) 60%), hsl(calc(var(--h)-40) var(--s) 55%)); color:#111; }
+
+  /* glitch overlay */
+  .glitch{
+    position:fixed;
+    inset:0;
+    z-index:5;
+    pointer-events:none;
+    mix-blend-mode:overlay;
+    opacity:.12;
+    background:
+      repeating-linear-gradient(180deg, rgba(255,255,255,.02) 0 1px, transparent 1px 4px);
+    animation: glitchShift 6s steps(4) infinite;
+  }
+
+  /* footer tiny apology */
+  footer{
+    position:fixed;
+    left:1rem;
+    bottom:1rem;
+    font-size:12px;
+    opacity:.75;
+    z-index:9;
+    text-shadow: 0 1px 2px rgba(0,0,0,.8);
+  }
+
+  /* keyframes */
+  @keyframes wobble{
+    0%{ transform: rotateX(8deg) rotateY(-8deg) rotateZ(-2deg) translateZ(0) scale(1); }
+    25%{ transform: rotateX(16deg) rotateY(4deg) rotateZ(2deg) translateZ(60px) scale(1.02); }
+    50%{ transform: rotateX(8deg) rotateY(8deg) rotateZ(-2deg) translateZ(0) scale(1); }
+    75%{ transform: rotateX(10deg) rotateY(-6deg) rotateZ(1deg) translateZ(30px) scale(.99); }
+    100%{ transform: rotateX(8deg) rotateY(-8deg) rotateZ(-2deg) translateZ(0) scale(1); }
+  }
+  @keyframes zoomDance{
+    0%{ transform: translateZ(0) scale(1); filter: saturate(1.4) }
+    50%{ transform: translateZ(40px) scale(calc(1 + (var(--v-scale) * 0.15))); filter: hue-rotate(calc(var(--h) * 1deg)) saturate(2) }
+    100%{ transform: translateZ(0) scale(1); filter: saturate(1.4); }
+  }
+  @keyframes titlePulse{
+    0%{ transform:translateX(-50%) translateZ(40px) scale(1); opacity:1 }
+    50%{ transform:translateX(-50%) translateZ(140px) scale(1.06); opacity:.9 }
+    100%{ transform:translateX(-50%) translateZ(40px) scale(1); opacity:1 }
+  }
+  @keyframes glitchShift{
+    0%{ transform: translate3d(0,0,0) }
+    20%{ transform: translate3d(-6px,2px,0) skewX(.6deg) }
+    40%{ transform: translate3d(6px,-2px,0) skewX(-.6deg) }
+    60%{ transform: translate3d(-4px,1px,0) skewX(.3deg) }
+    80%{ transform: translate3d(2px,-1px,0) skewX(-.3deg) }
+    100%{ transform: translate3d(0,0,0) }
+  }
+
+  /* small responsive things */
+  @media (max-width:700px){
+    .control{ bottom:1rem; right:1rem; gap:.4rem }
+    .btn{ padding:.6rem .8rem; font-size:12px; border-radius:10px; }
+  }
+
+</style>
+</head>
+<body>
+  <div class="stage" aria-hidden="true">
+    <!-- main video. Place yeet.webm in the same directory. -->
+    <video id="yeet" playsinline autoplay muted loop preload="auto">
+      <source src="yeet.webm" type="video/webm">
+      Your browser does not support webm video. Put yeet.webm next to this file.
+    </video>
+
+    <!-- duplicate ghosts for chromatic mess -->
+    <div class="ghost" id="ghost-r"><video playsinline autoplay muted loop preload="auto" id="g1"><source src="yeet.webm" type="video/webm"></video></div>
+    <div class="ghost" id="ghost-g"><video playsinline autoplay muted loop preload="auto" id="g2"><source src="yeet.webm" type="video/webm"></video></div>
+    <div class="ghost" id="ghost-b"><video playsinline autoplay muted loop preload="auto" id="g3"><source src="yeet.webm" type="video/webm"></video></div>
+  </div>
+
+  <div class="glitch" aria-hidden="true"></div>
+
+  <h1 class="title">YEET.EXE</h1>
+
+  <!-- particles -->
+  <div id="particles" aria-hidden="true"></div>
+
+  <!-- controls -->
+  <div class="control" role="region" aria-label="controls">
+    <button class="btn warn" id="btn-unmute" title="Unmute for full chaos">UNMUTE</button>
+    <button class="btn" id="btn-pulse" title="Toggle pulse">PULSE</button>
+    <button class="btn" id="btn-stop" title="Stop the video (for sanity)">STOP</button>
+  </div>
+
+  <footer>Drop yeet.webm in the same folder. This page will aggressively celebrate it.</footer>
+
+<script>
+/* ========= Abomination engine ========= */
+
+const root = document.documentElement;
+const video = document.getElementById('yeet');
+const g1 = document.getElementById('g1');
+const g2 = document.getElementById('g2');
+const g3 = document.getElementById('g3');
+const particles = document.getElementById('particles');
+let pulseOn = true;
+let audible = false;
+
+/* tiny helpers */
+function rand(min=0,max=1){ return Math.random()*(max-min)+min }
+function irand(a,b){ return Math.floor(rand(a,b+1)) }
+
+/* create hundreds of YEET particles */
+const EMOJI = ["SUB","PRIME","PRIME UND REIN","INVEST","HOLY SHIT","MOM GET THE CAMERA","67 67 67","MASTER BAITER","🔥","🚀"];
+for(let i=0;i<120;i++){
+  const p = document.createElement('div');
+  p.className = 'particle';
+  p.style.left = rand(-10,110)+'%';
+  p.style.top = rand(-10,110)+'%';
+  p.style.fontSize = Math.max(12, Math.min(88, rand(10,120))) + 'px';
+  p.style.opacity = rand(.08,.95);
+  p.textContent = EMOJI[irand(0,EMOJI.length-1)];
+  particles.appendChild(p);
+  // animate
+  const dur = rand(4,18);
+  const tx = rand(-40,40), ty = rand(-30,30);
+  p.animate([
+    { transform: `translate3d(0,0,0) rotate(0deg)` , opacity:p.style.opacity },
+    { transform: `translate3d(${tx}vmin, ${ty}vmin, ${irand(-200,200)}px) rotate(${irand(-720,720)}deg)`, opacity: rand(.02,1) }
+  ], { duration: dur*1000, easing: "ease-in-out", iterations: Infinity, direction: "alternate", delay: rand(0,3000) });
+}
+
+/* chromatic ghosts offsets to create lovely misalignment */
+const ghostEl = document.getElementById('ghost-r');
+const ghostElG = document.getElementById('ghost-g');
+const ghostElB = document.getElementById('ghost-b');
+
+function updateGhosts(){
+  const t = performance.now() / 1000;
+  ghostEl.style.setProperty('--tx', `${Math.sin(t*1.2)*6}px`);
+  ghostEl.style.setProperty('--ty', `${Math.cos(t*1.5)*-8}px`);
+  ghostEl.style.setProperty('--scl', `${0.03 + Math.sin(t*0.7)*0.02}`);
+
+  ghostElG.style.setProperty('--tx', `${Math.cos(t*1.3)*-10}px`);
+  ghostElG.style.setProperty('--ty', `${Math.sin(t*0.9)*6}px`);
+  ghostElG.style.setProperty('--scl', `${0.02 + Math.cos(t*0.4)*0.02}`);
+
+  ghostElB.style.setProperty('--tx', `${Math.sin(t*2.1)*10}px`);
+  ghostElB.style.setProperty('--ty', `${Math.cos(t*1.9)*-6}px`);
+  ghostElB.style.setProperty('--scl', `${0.04 + Math.cos(t*0.2)*0.03}`);
+
+  // tint them
+  g1.style.filter = `hue-rotate(-12deg) saturate(1.8) opacity(.8)`;
+  g2.style.filter = `hue-rotate(62deg) saturate(2) opacity(.6)`;
+  g3.style.filter = `hue-rotate(132deg) saturate(1.4) opacity(.45)`;
+
+  requestAnimationFrame(updateGhosts);
+}
+updateGhosts();
+
+/* color cycle and chaos variables */
+let h = 0;
+function colorTick(){
+  h = (h + 0.7) % 360;
+  root.style.setProperty('--h', h);
+  root.style.setProperty('--l', 52 + Math.sin(h*0.03)*6 + '%');
+  // pulse amplitude
+  root.style.setProperty('--pulse', 1 + Math.abs(Math.sin(h*0.02))*0.9);
+  root.style.setProperty('--v-scale', 0.3 + Math.abs(Math.cos(h*0.03))*1.1);
+  requestAnimationFrame(colorTick);
+}
+colorTick();
+
+/* micro-glitches that randomly slice the video */
+function makeSlice(){
+  const s = document.createElement('div');
+  s.style.position='fixed';
+  s.style.left = rand(0,90)+'%';
+  s.style.top = rand(0,98)+'%';
+  s.style.width = rand(6,30)+'%';
+  s.style.height = rand(2,14)+'%';
+  s.style.zIndex = 12;
+  s.style.pointerEvents = 'none';
+  s.style.background = 'linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.12))';
+  s.style.mixBlendMode = ['difference','overlay','screen','multiply'][irand(0,3)];
+  s.style.opacity = rand(.06,.6);
+  s.style.transform = `skew(${rand(-12,12)}deg)`;
+  document.body.appendChild(s);
+  setTimeout(()=> s.remove(), rand(400,2200));
+}
+setInterval(()=>{ if(Math.random() < .7) makeSlice(); }, 150);
+
+/* buttons */
+document.getElementById('btn-unmute').addEventListener('click', ()=>{
+  // try to enable sound; user gesture allows this
+  try{
+    video.muted = false;
+    g1.muted = false; g2.muted=false; g3.muted=false;
+    audible = true;
+    document.getElementById('btn-unmute').textContent = 'SILENCE';
+    document.getElementById('btn-unmute').classList.remove('warn');
+    document.getElementById('btn-unmute').classList.add('btn');
+  }catch(e){
+    console.warn('Unmute failed', e);
+  }
+});
+document.getElementById('btn-pulse').addEventListener('click', ()=>{
+  pulseOn = !pulseOn;
+  if(!pulseOn){
+    root.style.setProperty('--pulse', 1);
+    document.getElementById('btn-pulse').textContent = 'PULSE: OFF';
+  } else {
+    document.getElementById('btn-pulse').textContent = 'PULSE';
+  }
+});
+document.getElementById('btn-stop').addEventListener('click', ()=>{
+  if(video.paused){ video.play(); document.getElementById('btn-stop').textContent = 'STOP'; }
+  else { video.pause(); document.getElementById('btn-stop').textContent = 'PLAY'; }
+});
+
+/* keyboard emergency: press E to explode the world with particles */
+window.addEventListener('keydown', (ev)=>{
+  if(ev.key.toLowerCase() === 'e'){
+    for(let i=0;i<40;i++){
+      const b = document.createElement('div');
+      b.textContent = EMOJI[irand(0,EMOJI.length-1)];
+      b.style.position='fixed';
+      b.style.left = rand(10,90)+'%';
+      b.style.top = rand(10,90)+'%';
+      b.style.fontSize = rand(20,120)+'px';
+      b.style.zIndex = 9999;
+      b.style.willChange='transform,opacity';
+      document.body.appendChild(b);
+      b.animate([
+        { transform: 'translateY(0) scale(1)', opacity: 1 },
+        { transform: `translateY(${rand(-60,60)}vmin) translateX(${rand(-60,60)}vmin) rotate(${irand(-1080,1080)}deg) scale(0.2)`, opacity: 0 }
+      ], { duration: rand(600,1600), easing:'cubic-bezier(.2,.8,.2,1)' });
+      setTimeout(()=> b.remove(), 1700);
+    }
+  }
+});
+
+/* attempt to make the page even more aggressive using WebAudio analyser (optional) */
+try{
+  const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  const source = audioCtx.createMediaElementSource(video);
+  const analyser = audioCtx.createAnalyser();
+  analyser.fftSize = 512;
+  source.connect(analyser);
+  analyser.connect(audioCtx.destination);
+
+  const freqData = new Uint8Array(analyser.frequencyBinCount);
+  function audioLoop(){
+    analyser.getByteFrequencyData(freqData);
+    // compute a rough energy
+    let sum=0;
+    for(let i=0;i<freqData.length;i++) sum += freqData[i];
+    const avg = sum / freqData.length;
+    const scale = Math.min(1.5, 1 + (avg / 255) * 1.2);
+    root.style.setProperty('--v-scale', scale.toFixed(3));
+    requestAnimationFrame(audioLoop);
+  }
+  audioLoop();
+  // resume context on user gesture
+  window.addEventListener('click', ()=> { if(audioCtx.state === 'suspended') audioCtx.resume(); }, { once: false });
+}catch(err){
+  console.debug('No WebAudio available or blocked by browser', err);
+}
+
+/* tiny pre-flight: add a warning if yeet.webm not found (best-effort) */
+video.addEventListener('error', ()=>{
+  const warn = document.createElement('div');
+  warn.style.position='fixed';
+  warn.style.left='50%';
+  warn.style.top='50%';
+  warn.style.transform='translate(-50%,-50%)';
+  warn.style.padding='1.6rem 2rem';
+  warn.style.background='rgba(0,0,0,.8)';
+  warn.style.border='3px solid white';
+  warn.style.zIndex=99999;
+  warn.style.color='white';
+  warn.style.fontWeight=900;
+  warn.style.borderRadius='14px';
+  warn.textContent = 'ERROR: yeet.webm not found. Place yeet.webm next to index.html and reload.';
+  document.body.appendChild(warn);
+});
+
+/* make sure duplicates remain in sync */
+function syncGhosts(){
+  if(video.currentTime && !isNaN(video.currentTime)){
+    [g1,g2,g3].forEach(g => {
+      try { if(Math.abs(g.currentTime - video.currentTime) > 0.1) g.currentTime = video.currentTime; } catch(e){}
+    });
+  }
+  requestAnimationFrame(syncGhosts);
+}
+syncGhosts();
+
+</script>
+</body>
+</html>
